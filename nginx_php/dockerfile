@@ -1,0 +1,12 @@
+FROM nginx
+RUN apt-get update && \
+    apt-get install -y php7.0-fpm php7.0-mysql && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo  "<?php\nphpinfo();?>" > /usr/share/nginx/html/info.php && \
+    service php7.0-fpm start
+
+COPY ./blog.conf /etc/nginx/nginx.conf
+COPY ./www.conf /etc/php/7.0/fpm/pool.d/www.conf
+COPY ./start.sh /root/start.sh
+
+CMD /root/start.sh

@@ -1,0 +1,78 @@
+
+version : "3.2"
+services:
+  db:
+    image: mysql
+    volumes:
+      - "./data/db:/var/lib/mysql"
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_ROOT_PASSWORD: NoFfDYpxvWHeEZYMofrwsMYDAI4mJE6H
+    expose:
+      - "3306"
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    links:
+      - db
+
+  blog0:
+    build : ./nginx_php
+    volumes:
+      - "./data/www:/usr/share/nginx/html"
+    expose:
+      - "80"
+    links:
+      - db
+
+  blog1:
+    build : ./nginx_php
+    volumes:
+      - "./data/www:/usr/share/nginx/html"
+    expose:
+      - "80"
+    links:
+      - db
+
+  blog2:
+    build : ./nginx_php
+    volumes:
+      - "./data/www:/usr/share/nginx/html"
+    expose:
+      - "80"
+    links:
+      - db
+
+  blog3:
+    build : ./nginx_php
+    volumes:
+      - "./data/www:/usr/share/nginx/html"
+    expose:
+      - "80"
+    links:
+      - db
+
+  blog4:
+    build : ./nginx_php
+    volumes:
+      - "./data/www:/usr/share/nginx/html"
+    expose:
+      - "80"
+    links:
+      - db
+
+
+  proxy:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - "./proxy.conf:/etc/nginx/nginx.conf"
+    links:
+      - blog0
+      - blog1
+      - blog2
+      - blog3
+      - blog4
